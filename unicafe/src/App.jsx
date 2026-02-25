@@ -1,5 +1,39 @@
 import { useState } from 'react'
 
+const StatisticsLine=(props)=>{
+  return (
+    <div>{props.text} {props.value}</div>
+  )
+}
+
+const Statistics =(props)=>{
+    if (props.all === 0) {
+    return (
+      <div>
+        no feedback yet
+      </div>
+    )
+  }
+  return (
+    <div>
+      <p>Statistics</p>
+      <StatisticsLine text = 'good' value={props.good}/>
+
+      <StatisticsLine text ='bad' value={props.bad}/>
+
+      <StatisticsLine text ='neutral' value={props.neutral}/>
+
+      <StatisticsLine text='all' value={props.all}/>
+
+      <StatisticsLine text='average' value= {props.average}/>
+
+      <StatisticsLine text='positive' value={props.positive}/>
+    </div>
+  )
+}
+  const Button =(props)=> {
+    return <button onClick={props.onClick}>{props.text}</button>
+  }
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
@@ -8,37 +42,43 @@ const App = () => {
   const [total,setTotal] = useState(0)
 
   const handelGood =()=>{
-    setGood(good+1)
-    setTotal(good+bad+neutral)
+    const New_Good = good +1
+    setGood(New_Good)
+    const total = good+bad + neutral
+    setTotal(total)
   }
   const handelBad=()=>{
-    setBad(bad+1)
-    setTotal(good+bad+neutral)
+    const New_Bad = bad+1
+    setBad(New_Bad)
+    const total = good+bad + neutral
+    setTotal(total)
   }
   const handelNeutral=()=>{
-    setNeutral(neutral+1)
-    setTotal(good+bad+neutral)
+    const New_neutral = neutral+1
+    setNeutral(New_neutral)
+    const total = good+bad + neutral
+    setTotal(total)
   }
-  const Button =(props)=> {
-    <button onClick={props.onClick}>{text}</button>
-  }
+  const average = total === 0 ? 0:(good-bad)/total
+  const positive = total ===0 ? 0:(good/total)*100
   return (
     <div>
       <h1>Give feedback</h1>
       {good}
-      <button onClick={handelGood}>good</button>
+      <Button onClick={handelGood} text='good'/>
       {neutral}
-      <button onClick={handelNeutral}>neutral</button>
+      <Button onClick={handelNeutral} text='neutral'/>
       {bad}
-      <button onClick={handelBad}>bad</button>
-      <p>Statistics</p>
-      <p>good {good}</p>
-      <p>bad {bad}</p>
-      <p>neutral {neutral}</p>
-      <p>all {total}</p>
-      <p>average {(bad+good+neutral)/ total}</p>
-      <p>positive {good/total *100}</p>
+      <Button onClick={handelBad} text='bad'/>
+      <Statistics
+        good={good}
+        bad ={bad}
+        neutral ={neutral}
+        all ={total}
+        average= {average}
+        positive ={positive}/>
     </div>
+    
   )
 }
 
